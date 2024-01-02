@@ -1,13 +1,50 @@
 {
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "express-handlebars": "^6.0.6"
-  },
+  "name": "website-2",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "watch": "nodemon index.js",
-    "build": "echo 'no need :)'"
+    "build": "PORT=8000 remix build --port 8001",
+    "dev": "PORT=8000 remix dev --manual --port 8001",
+    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "start": "remix-serve ./build/index.js",
+    "typecheck": "tsc",
+    "compile": "graphql-codegen",
+    "watch": "graphql-codegen -w"
   },
-  "type": "module"
+  "dependencies": {
+    "@altrd/mpformat": "^0.2.0",
+    "@apollo/client": "^3.8.8",
+    "@remix-run/css-bundle": "^2.4.1",
+    "@remix-run/node": "^2.4.1",
+    "@remix-run/react": "^2.4.1",
+    "@remix-run/serve": "^2.4.1",
+    "graphql": "^16.8.1",
+    "isbot": "^3.6.8",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-top-loading-bar": "^2.3.1",
+    "styled-components": "^6.1.6"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@remix-run/dev": "^2.4.1",
+    "@types/lodash": "^4.14.202",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

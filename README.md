@@ -1,5 +1,38 @@
-# Shootmania Obstacle Website
+# Welcome to Remix!
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ebab201c-970a-4ac6-8a02-f78e07c1ecfa/deploy-status)](https://app.netlify.com/sites/compassionate-chandrasekhar-0e26d4/deploys)
+- [Remix Docs](https://remix.run/docs)
 
-This project is the website located at https://www.obstacle.ovh/
+## Development
+
+From your terminal:
+
+```sh
+npm run dev
+```
+
+This starts your app in development mode, rebuilding assets on file changes.
+
+## Deployment
+
+First, build your app for production:
+
+```sh
+npm run build
+```
+
+Then run the app in production mode:
+
+```sh
+npm start
+```
+
+Now you'll need to pick a host to deploy it to.
+
+### DIY
+
+If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
+
+Make sure to deploy the output of `remix build`
+
+- `build/`
+- `public/build/`

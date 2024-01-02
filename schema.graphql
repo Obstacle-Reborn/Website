@@ -1,0 +1,234 @@
+type Banishment {
+	id: Int!
+	dateBan: NaiveDateTime!
+	duration: Int!
+	wasReprieved: Boolean!
+	reason: String!
+	player: Player!
+	banishedBy: Player!
+}
+
+
+type CheckpointTimes {
+	cpNum: Int!
+	time: Int!
+}
+
+type Event {
+	handle: String!
+	cooldown: Int
+	admins: [Player!]!
+	categories: [EventCategory!]!
+	editions: [EventEdition!]!
+}
+
+type EventCategory {
+	handle: String!
+	name: String!
+	bannerImgUrl: String
+}
+
+type EventEdition {
+	id: Int!
+	event: Event!
+	name: String!
+	startDate: NaiveDateTime!
+	bannerImgUrl: String
+	categories: [EventCategory!]!
+}
+
+
+
+
+type Map implements Node {
+	id: ID!
+	gameId: String!
+	playerId: ID!
+	cpsNumber: Int
+	player: Player!
+	name: String!
+	reversed: Boolean!
+	medalFor(reqLogin: String!): MedalPrice
+	ratings: [Rating!]!
+	averageRating: [PlayerRating!]!
+	records(rankSortBy: SortState, dateSortBy: SortState): [RankedRecord!]!
+}
+
+type MapConnection {
+	"""
+	Information to aid in pagination.
+	"""
+	pageInfo: PageInfo!
+	"""
+	A list of edges.
+	"""
+	edges: [MapEdge!]!
+	"""
+	A list of nodes.
+	"""
+	nodes: [Map!]!
+}
+
+"""
+An edge in a connection.
+"""
+type MapEdge {
+	"""
+	The item at the end of the edge
+	"""
+	node: Map!
+	"""
+	A cursor for use in pagination
+	"""
+	cursor: String!
+}
+
+enum Medal {
+	BRONZE
+	SILVER
+	GOLD
+	CHAMPION
+}
+
+type MedalPrice {
+	priceDate: NaiveDateTime!
+	medal: Medal!
+	map: Map!
+	player: Player!
+}
+
+"""
+ISO 8601 combined date and time without timezone.
+
+# Examples
+
+* `2015-07-01T08:59:60.123`,
+"""
+scalar NaiveDateTime
+
+interface Node {
+	id: ID!
+}
+
+"""
+Information about pagination in a connection
+"""
+type PageInfo {
+	"""
+	When paginating backwards, are there more items?
+	"""
+	hasPreviousPage: Boolean!
+	"""
+	When paginating forwards, are there more items?
+	"""
+	hasNextPage: Boolean!
+	"""
+	When paginating backwards, the cursor to continue.
+	"""
+	startCursor: String
+	"""
+	When paginating forwards, the cursor to continue.
+	"""
+	endCursor: String
+}
+
+type Player implements Node {
+	id: ID!
+	login: String!
+	name: String!
+	zonePath: String
+	banishments: [Banishment!]!
+	role: PlayerRole!
+	maps(after: String, before: String, first: Int, last: Int): MapConnection!
+	records(dateSortBy: SortState): [RankedRecord!]!
+}
+
+type PlayerConnection {
+	"""
+	Information to aid in pagination.
+	"""
+	pageInfo: PageInfo!
+	"""
+	A list of edges.
+	"""
+	edges: [PlayerEdge!]!
+	"""
+	A list of nodes.
+	"""
+	nodes: [Player!]!
+}
+
+"""
+An edge in a connection.
+"""
+type PlayerEdge {
+	"""
+	The item at the end of the edge
+	"""
+	node: Player!
+	"""
+	A cursor for use in pagination
+	"""
+	cursor: String!
+}
+
+type PlayerRating {
+	kind: RatingKind!
+	rating: Float!
+}
+
+enum PlayerRole {
+	PLAYER
+	MODERATOR
+	ADMIN
+}
+
+type QueryRoot {
+	banishments: [Banishment!]!
+	events: [Event!]!
+	players(after: String, before: String, first: Int, last: Int): PlayerConnection!
+	maps(after: String, before: String, first: Int, last: Int): MapConnection!
+	node(id: ID!): Node
+	record(recordId: Int!): RankedRecord!
+	map(gameId: String!): Map!
+	player(login: String!): Player!
+	records(dateSortBy: SortState): [RankedRecord!]!
+}
+
+type RankedRecord {
+	id: Int!
+	rank: Int!
+	map: Map!
+	player: Player!
+	averageCpsTimes: [CheckpointTimes!]!
+	cpsTimes: [CheckpointTimes!]!
+	time: Int!
+	respawnCount: Int!
+	tryCount: Int!
+	recordDate: NaiveDateTime!
+	flags: Int!
+}
+
+type Rating {
+	ratings: [PlayerRating!]!
+	player: Player!
+	map: Map!
+	ratingDate: NaiveDateTime!
+}
+
+enum RatingKind {
+	ROUTE
+	DECO
+	SMOOTHNESS
+	DIFFICULTY
+}
+
+enum SortState {
+	SORT
+	REVERSE
+}
+
+
+schema {
+	query: QueryRoot
+}
